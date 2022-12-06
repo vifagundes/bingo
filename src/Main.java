@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Main{
     public static int bingoCardSize = 6;
+    public static int limitBingoCardNumbers = 61;
 
     public static void main(String[] args) {
 
@@ -26,6 +27,13 @@ public class Main{
             if (manualOrAutomatic[i] == 2) {
                 System.out.printf("DIGITE OS 6 NUMEROS DA CARTELA %s\n", players[i]);
                 bingoCardsList[i] = getBingoCards(manualOrAutomatic[i]);
+            }
+        }
+
+        for (int i = 0; i < players.length; i++){
+            System.out.printf("\n%s", players[i]);
+            for (int j = 0; j < bingoCardsList[i].length; j++) {
+                System.out.printf("\t%d",bingoCardsList[i][j]);
             }
         }
     }
@@ -55,11 +63,11 @@ public class Main{
     public static int[] getBingoCards(int manualOrAutomatic) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        int[] bingoCard = new int[6];
+        int[] bingoCard = new int[bingoCardSize];
         switch (manualOrAutomatic) {
             case 1:
                 for (int i = 0; i < bingoCardSize; i++) {
-                    bingoCard[i] = random.nextInt(61);
+                    bingoCard[i] = random.nextInt(limitBingoCardNumbers);
                 }
                 break;
             case 2:
