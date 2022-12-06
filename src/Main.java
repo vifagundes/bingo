@@ -27,9 +27,6 @@ public class Main{
                     bingoCardsList[i] = getBingoCardsManual();
                     break;
                 default:
-                    System.out.printf("\n%s ESCOLHA SE A SUA CARTELA VAI SER AUTOMATICA" +
-                            "\n1 - SIM\n2 - NAO\n", players[i]);
-                    manualOrAutomatic[i] = getManualOrAutomatic();
                     i--;
                     break;
             }
@@ -75,7 +72,6 @@ public class Main{
     }
 
     public static int[] getBingoCardsAutomatic() {
-        Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         int[] bingoCard = new int[bingoCardSize];
         for (int i = 0; i < bingoCardSize; i++) {
