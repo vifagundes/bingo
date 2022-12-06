@@ -8,7 +8,7 @@ public class Main{
 
     public static void main(String[] args) {
 
-        int qntPlayers  = welcome();
+        int qntPlayers = welcome();
         String[] players = getPlayers(qntPlayers);
         int[] manualOrAutomatic = new int[qntPlayers];
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
@@ -18,15 +18,20 @@ public class Main{
             System.out.printf("\n%s ESCOLHA SE A SUA CARTELA VAI SER AUTOMATICA" +
                     "\n1 - SIM\n2 - NAO\n", players[i]);
             manualOrAutomatic[i] = getManualOrAutomatic();
-        }
-
-        for (int i = 0; i < players.length; i++) {
-            if (manualOrAutomatic[i] == 1) {
-                bingoCardsList[i] = getBingoCards(manualOrAutomatic[i]);
-            }
-            if (manualOrAutomatic[i] == 2) {
-                System.out.printf("DIGITE OS 6 NUMEROS DA CARTELA %s\n", players[i]);
-                bingoCardsList[i] = getBingoCards(manualOrAutomatic[i]);
+            switch (manualOrAutomatic[i]) {
+                case 1:
+                    bingoCardsList[i] = getBingoCardsAutomatic();
+                    break;
+                case 2:
+                    System.out.printf("DIGITE OS 6 NUMEROS DA CARTELA %s\n", players[i]);
+                    bingoCardsList[i] = getBingoCardsManual();
+                    break;
+                default:
+                    System.out.printf("\n%s ESCOLHA SE A SUA CARTELA VAI SER AUTOMATICA" +
+                            "\n1 - SIM\n2 - NAO\n", players[i]);
+                    manualOrAutomatic[i] = getManualOrAutomatic();
+                    i--;
+                    break;
             }
         }
 
@@ -60,24 +65,21 @@ public class Main{
         return scanner.nextInt();
     }
 
-    public static int[] getBingoCards(int manualOrAutomatic) {
+    public static int[] getBingoCardsManual() {
+        Scanner scanner = new Scanner(System.in);
+        int[] bingoCard = new int[bingoCardSize];
+        for (int i = 0; i < bingoCardSize; i++) {
+            bingoCard[i] = scanner.nextInt();
+        }
+        return bingoCard;
+    }
+
+    public static int[] getBingoCardsAutomatic() {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         int[] bingoCard = new int[bingoCardSize];
-        switch (manualOrAutomatic) {
-            case 1:
-                for (int i = 0; i < bingoCardSize; i++) {
-                    bingoCard[i] = random.nextInt(limitBingoCardNumbers);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < bingoCardSize; i++) {
-                    bingoCard[i] = scanner.nextInt();
-                }
-                break;
-            default:
-                getManualOrAutomatic();
-                break;
+        for (int i = 0; i < bingoCardSize; i++) {
+            bingoCard[i] = random.nextInt(limitBingoCardNumbers);
         }
         return bingoCard;
     }
