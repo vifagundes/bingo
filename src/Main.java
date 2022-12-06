@@ -24,7 +24,7 @@ public class Main{
                 bingoCardsList[i] = getBingoCards(manualOrAutomatic[i]);
             }
             if (manualOrAutomatic[i] == 2) {
-                System.out.println("DIGITE OS 6 NUMEROS DA CARTELA");
+                System.out.printf("DIGITE OS 6 NUMEROS DA CARTELA %s\n", players[i]);
                 bingoCardsList[i] = getBingoCards(manualOrAutomatic[i]);
             }
         }
