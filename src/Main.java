@@ -7,18 +7,15 @@ public class Main{
     public static int limitBingoCardNumbers = 61;
 
     public static void main(String[] args) {
-
-        int qntPlayers = welcome();
+        System.out.println("=== BEM VINDO AO BINGO! ===\n\n");
+        int qntPlayers = getQntPlayers();
         String[] players = getPlayers(qntPlayers);
-        int[] manualOrAutomatic = new int[qntPlayers];
+        int manualOrAutomatic = getManualOrAutomatic();
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
         System.out.println("PARTICIPANTES: " + Arrays.toString(players));
 
         for (int i = 0; i < players.length; i++) {
-            System.out.printf("\n%s ESCOLHA SE A SUA CARTELA VAI SER AUTOMATICA" +
-                    "\n1 - SIM\n2 - NAO\n", players[i]);
-            manualOrAutomatic[i] = getManualOrAutomatic();
-            switch (manualOrAutomatic[i]) {
+            switch (manualOrAutomatic) {
                 case 1:
                     bingoCardsList[i] = getBingoCardsAutomatic();
                     break;
@@ -40,9 +37,8 @@ public class Main{
         }
     }
 
-    public static int welcome() {
+    public static int getQntPlayers() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== BEM VINDO AO BINGO! ===\n\n");
         System.out.println("DIGITE QUANTOS JOGADORES PARTICIPARAO DO JOGO");
         return scanner.nextInt();
     }
@@ -59,6 +55,9 @@ public class Main{
 
     public static int getManualOrAutomatic() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("ESCOLHA SE DESEJA JOGAR NO MODO AUTOMATUCO OU MANUAL");
+        System.out.println("1- AUTOMATICO");
+        System.out.println("2- MANUAL");
         return scanner.nextInt();
     }
 
