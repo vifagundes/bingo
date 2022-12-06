@@ -10,9 +10,9 @@ public class Main{
         System.out.println("=== BEM VINDO AO BINGO! ===\n\n");
         int qntPlayers = getQntPlayers();
         String[] players = getPlayers(qntPlayers);
+        System.out.println("PARTICIPANTES: " + Arrays.toString(players));
         int manualOrAutomatic = getManualOrAutomatic();
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
-        System.out.println("PARTICIPANTES: " + Arrays.toString(players));
 
         for (int i = 0; i < players.length; i++) {
             switch (manualOrAutomatic) {
@@ -24,17 +24,12 @@ public class Main{
                     bingoCardsList[i] = getBingoCardsManual();
                     break;
                 default:
+                    manualOrAutomatic = getManualOrAutomatic();
                     i--;
                     break;
             }
         }
-
-        for (int i = 0; i < players.length; i++){
-            System.out.printf("\n%s", players[i]);
-            for (int j = 0; j < bingoCardsList[i].length; j++) {
-                System.out.printf("\t%d",bingoCardsList[i][j]);
-            }
-        }
+        printPlayersNamesAndBingoCards(players,bingoCardsList);
     }
 
     public static int getQntPlayers() {
@@ -75,7 +70,17 @@ public class Main{
         int[] bingoCard = new int[bingoCardSize];
         for (int i = 0; i < bingoCardSize; i++) {
             bingoCard[i] = random.nextInt(limitBingoCardNumbers);
+            if (bingoCard[i] == 0) bingoCard[i] = 1;
         }
         return bingoCard;
+    }
+
+    public static void printPlayersNamesAndBingoCards(String[] players, int[][] bingoCards) {
+        for (int i = 0; i < players.length; i++){
+            System.out.printf("\n%s", players[i]);
+            for (int j = 0; j < bingoCards[i].length; j++) {
+                System.out.printf("\t%d",bingoCards[i][j]);
+            }
+        }
     }
 }
