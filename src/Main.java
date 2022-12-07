@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-
 import static java.lang.System.exit;
 
 public class Main{
@@ -10,13 +9,12 @@ public class Main{
     public static int numberOfRounds        = limitBingoCardNumbers - 1;
 
     public static void main(String[] args) {
-        System.out.println("========\tBEM VINDO AO BINGO\t========\n");
-        int qntPlayers = getQntPlayers();
-        String[] players = getPlayers(qntPlayers);
+
+        int qntPlayers         = getQntPlayers();
+        String[] players       = getPlayers(qntPlayers);
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
-        int[] pool = new int[numberOfRounds];
-        System.out.printf("\nPARTICIPANTES: %s\n", Arrays.toString(players));
-        int manualOrAutomatic = getManualOrAutomatic();
+        int[] pool             = new int[numberOfRounds];
+        int manualOrAutomatic  = getManualOrAutomatic();
 
         for (int i = 0; i < players.length; i++) {
             switch (manualOrAutomatic) {
@@ -33,17 +31,10 @@ public class Main{
                     break;
             }
         }
+
         printPlayersNamesAndBingoCards(players,bingoCardsList);
+        printInstructions();
 
-        for (int i = 0; i < pool.length; i++) {
-            pool[i] = i+1;
-        }
-
-        System.out.println("\n\n========\tQUE COMECEM AS RODADAS\t========");
-        System.out.println("SIGA AS INSTRUCOES PARA CONTINUAR");
-        System.out.println("A TECLA 1 DA CONTINUAÇÃO PARA O JOGO");
-        System.out.println("A TECLA 2 FINALIZA O JOGO");
-        System.out.println("========\tBOA SORTE A TODOS!\t\t========");
         for (int i = 0; i < pool.length; i++) {
             int nextRound = getNextRound();
             int round = i+1;
@@ -57,11 +48,11 @@ public class Main{
                     break;
             }
         }
-
     }
-
+    
     public static int getQntPlayers() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("========\tBEM VINDO AO BINGO\t========\n");
         System.out.println("DIGITE QUANTOS JOGADORES PARTICIPARAO DO JOGO");
         return scanner.nextInt();
     }
@@ -73,6 +64,7 @@ public class Main{
             System.out.printf("DIGITE O NOME DO JOGADOR %d: ", i+1);
             players[i] = scanner.nextLine().toUpperCase();
         }
+        System.out.printf("\nPARTICIPANTES: %s\n", Arrays.toString(players));
         return players;
     }
 
@@ -114,10 +106,22 @@ public class Main{
         }
     }
 
+    private static void printInstructions() {
+        System.out.println("\n\n========\tQUE COMECEM AS RODADAS\t========");
+        System.out.println("SIGA AS INSTRUCOES PARA CONTINUAR");
+        System.out.println("A TECLA 1 DA CONTINUAÇÃO PARA O JOGO");
+        System.out.println("A TECLA 2 FINALIZA O JOGO");
+        System.out.println("========\tBOA SORTE A TODOS!\t\t========");
+    }
+
     public static int getPrizeDraw(int[] pool) {
         Random random = new Random();
         int drawNumber = 0;
         int prizeNumber = random.nextInt(limitBingoCardNumbers);
+
+        for (int i = 0; i < pool.length; i++) {
+            pool[i] = i+1;
+        }
 
         for (int i = 0; i < pool.length; i++) {
             drawNumber = pool[i];
