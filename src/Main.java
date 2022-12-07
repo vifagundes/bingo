@@ -46,10 +46,17 @@ public class Main{
                 case 2:
                     exit(0);
                     break;
+                case 3:
+                    printInstructions();
+                    i--;
+                    break;
+                default:
+                    i--;
+                    break;
             }
         }
     }
-    
+
     public static int getQntPlayers() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("========\tBEM VINDO AO BINGO\t========\n");
@@ -107,11 +114,12 @@ public class Main{
     }
 
     private static void printInstructions() {
-        System.out.println("\n\n========\tQUE COMECEM AS RODADAS\t========");
+        System.out.println("\n\n========\tINSTRUCOES\t========");
         System.out.println("SIGA AS INSTRUCOES PARA CONTINUAR");
         System.out.println("A TECLA 1 DA CONTINUAÇÃO PARA O JOGO");
         System.out.println("A TECLA 2 FINALIZA O JOGO");
-        System.out.println("========\tBOA SORTE A TODOS!\t\t========");
+        System.out.println("A TECLA 3 MOSTRA AS INSTRUCOES");
+        System.out.println("========\tBOA SORTE\t========");
     }
 
     public static int getPrizeDraw(int[] pool) {
@@ -138,6 +146,7 @@ public class Main{
         System.out.println("\nPROXIMA RODADA?");
         System.out.println("1- SIM");
         System.out.println("2- NAO");
+        System.out.println("3- INSTRUCOES");
         return scanner.nextInt();
     }
 }
