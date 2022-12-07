@@ -5,17 +5,16 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class Main{
-    public static int bingoCardSize = 5;
+    public static int bingoCardSize         = 5;
     public static int limitBingoCardNumbers = 61;
-    public static int numberOfRounds = limitBingoCardNumbers -1;
+    public static int numberOfRounds        = limitBingoCardNumbers - 1;
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("========\tBEM VINDO AO BINGO!\t========\n");
+        System.out.println("========\tBEM VINDO AO BINGO\t========\n");
         int qntPlayers = getQntPlayers();
         String[] players = getPlayers(qntPlayers);
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
-        int[] pool = new int[60];
+        int[] pool = new int[numberOfRounds];
         System.out.printf("\nPARTICIPANTES: %s\n", Arrays.toString(players));
         int manualOrAutomatic = getManualOrAutomatic();
 
@@ -34,7 +33,6 @@ public class Main{
                     break;
             }
         }
-        System.out.println("JOGADORES\tCARTELAS");
         printPlayersNamesAndBingoCards(players,bingoCardsList);
 
         for (int i = 0; i < pool.length; i++) {
@@ -106,11 +104,12 @@ public class Main{
         return bingoCard;
     }
 
-    public static void printPlayersNamesAndBingoCards(String[] players, int[][] bingoCards) {
+    public static void  printPlayersNamesAndBingoCards(String[] players, int[][] bingoCards) {
+        System.out.printf("JOGADORES\t\tCARTELAS\n");
         for (int i = 0; i < players.length; i++){
-            System.out.printf("\n%s\t", players[i]);
+            System.out.printf("\n%-15s", players[i]);
             for (int j = 0; j < bingoCards[i].length; j++) {
-                System.out.printf("\t%d",bingoCards[i][j]);
+                System.out.printf("%d\t",bingoCards[i][j]);
             }
         }
     }
@@ -122,7 +121,6 @@ public class Main{
 
         for (int i = 0; i < pool.length; i++) {
             drawNumber = pool[i];
-
             if (drawNumber == prizeNumber) {
                 drawNumber = pool[i];
                 break;
@@ -133,10 +131,9 @@ public class Main{
 
     public static int getNextRound() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n\nPROXIMA RODADA?");
+        System.out.println("\nPROXIMA RODADA?");
         System.out.println("1- SIM");
         System.out.println("2- NAO");
         return scanner.nextInt();
-
     }
 }
