@@ -2,16 +2,21 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class Main{
     public static int bingoCardSize = 5;
     public static int limitBingoCardNumbers = 61;
+    public static int numberOfRounds = limitBingoCardNumbers -1;
 
     public static void main(String[] args) {
-        System.out.println("=== BEM VINDO AO BINGO! ===\n\n");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("========\tBEM VINDO AO BINGO!\t========\n");
         int qntPlayers = getQntPlayers();
         String[] players = getPlayers(qntPlayers);
         int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
-        System.out.println("PARTICIPANTES: " + Arrays.toString(players));
+        int[] pool = new int[60];
+        System.out.printf("\nPARTICIPANTES: %s\n", Arrays.toString(players));
         int manualOrAutomatic = getManualOrAutomatic();
 
         for (int i = 0; i < players.length; i++) {
@@ -20,7 +25,7 @@ public class Main{
                     bingoCardsList[i] = getBingoCardsAutomatic();
                     break;
                 case 2:
-                    System.out.printf("DIGITE OS 6 NUMEROS DA CARTELA %s\n", players[i]);
+                    System.out.printf("DIGITE OS %d NUMEROS DA CARTELA %s\n", bingoCardSize, players[i]);
                     bingoCardsList[i] = getBingoCardsManual();
                     break;
                 default:
@@ -29,7 +34,32 @@ public class Main{
                     break;
             }
         }
+        System.out.println("JOGADORES\tCARTELAS");
         printPlayersNamesAndBingoCards(players,bingoCardsList);
+
+        for (int i = 0; i < pool.length; i++) {
+            pool[i] = i+1;
+        }
+
+        System.out.println("\n\n========\tQUE COMECEM AS RODADAS\t========");
+        System.out.println("SIGA AS INSTRUCOES PARA CONTINUAR");
+        System.out.println("A TECLA 1 DA CONTINUAÇÃO PARA O JOGO");
+        System.out.println("A TECLA 2 FINALIZA O JOGO");
+        System.out.println("========\tBOA SORTE A TODOS!\t\t========");
+        for (int i = 0; i < pool.length; i++) {
+            int nextRound = getNextRound();
+            int round = i+1;
+            switch (nextRound) {
+                case 1:
+                    int drawNumber = getPrizeDraw(pool);
+                    System.out.printf("\nRODADA - %d\nNUMERO SORTEADO - %d\n", round, drawNumber);
+                    break;
+                case 2:
+                    exit(0);
+                    break;
+            }
+        }
+
     }
 
     public static int getQntPlayers() {
@@ -50,7 +80,7 @@ public class Main{
 
     public static int getManualOrAutomatic() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("ESCOLHA SE DESEJA JOGAR NO MODO AUTOMATUCO OU MANUAL");
+        System.out.println("\nESCOLHA SE DESEJA JOGAR NO MODO AUTOMATUCO OU MANUAL");
         System.out.println("1- AUTOMATICO");
         System.out.println("2- MANUAL");
         return scanner.nextInt();
@@ -78,10 +108,35 @@ public class Main{
 
     public static void printPlayersNamesAndBingoCards(String[] players, int[][] bingoCards) {
         for (int i = 0; i < players.length; i++){
-            System.out.printf("\n%s", players[i]);
+            System.out.printf("\n%s\t", players[i]);
             for (int j = 0; j < bingoCards[i].length; j++) {
                 System.out.printf("\t%d",bingoCards[i][j]);
             }
         }
+    }
+
+    public static int getPrizeDraw(int[] pool) {
+        Random random = new Random();
+        int drawNumber = 0;
+        int prizeNumber = random.nextInt(limitBingoCardNumbers);
+
+        for (int i = 0; i < pool.length; i++) {
+            drawNumber = pool[i];
+
+            if (drawNumber == prizeNumber) {
+                drawNumber = pool[i];
+                break;
+            }
+        }
+        return drawNumber;
+    }
+
+    public static int getNextRound() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n\nPROXIMA RODADA?");
+        System.out.println("1- SIM");
+        System.out.println("2- NAO");
+        return scanner.nextInt();
+
     }
 }
