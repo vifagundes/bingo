@@ -3,16 +3,16 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main{
-    public static int bingoCardSize = 6;
+    public static int bingoCardSize = 5;
     public static int limitBingoCardNumbers = 61;
 
     public static void main(String[] args) {
         System.out.println("=== BEM VINDO AO BINGO! ===\n\n");
         int qntPlayers = getQntPlayers();
         String[] players = getPlayers(qntPlayers);
+        int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
         System.out.println("PARTICIPANTES: " + Arrays.toString(players));
         int manualOrAutomatic = getManualOrAutomatic();
-        int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
 
         for (int i = 0; i < players.length; i++) {
             switch (manualOrAutomatic) {
@@ -58,9 +58,11 @@ public class Main{
 
     public static int[] getBingoCardsManual() {
         Scanner scanner = new Scanner(System.in);
+        String entry = scanner.nextLine();
+        String[] numbers = entry.split(",");
         int[] bingoCard = new int[bingoCardSize];
         for (int i = 0; i < bingoCardSize; i++) {
-            bingoCard[i] = scanner.nextInt();
+            bingoCard[i] = Integer.parseInt(numbers[i]);
         }
         return bingoCard;
     }
@@ -70,8 +72,7 @@ public class Main{
         int[] bingoCard = new int[bingoCardSize];
         for (int i = 0; i < bingoCardSize; i++) {
             bingoCard[i] = random.nextInt(limitBingoCardNumbers);
-            if (bingoCard[i] == 0) bingoCard[i] = 1;
-        }
+            }
         return bingoCard;
     }
 
