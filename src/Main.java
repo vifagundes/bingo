@@ -32,7 +32,6 @@ public class Main {
             pool[i] = pool[j];
             pool[j] = temp;
         }
-        System.out.println(Arrays.toString(pool));
 
         for (int i = 0; i < players.length; i++) {
             switch (manualOrAutomatic) {
