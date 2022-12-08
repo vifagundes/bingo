@@ -20,11 +20,9 @@ public class Main {
         int[][] updatedScoredPointsList = new int[1][qntPlayers];
         int[] pool = new int[numberOfRounds];
 
-
         for (int i = 0; i < pool.length; i++) {
             pool[i] = i + 1;
         }
-
 
         for (int i=0; i < (pool.length - 1); i++) {
             int j = random.nextInt(pool.length);
@@ -54,12 +52,10 @@ public class Main {
             int round = i + 1;
             switch (nextRound) {
                 case 1:
-
                     int drawNumber = getPrizeDraw(pool, i);
                     System.out.printf("\nRODADA - %d\nNUMERO SORTEADO - %d\n", round, drawNumber);
                     updatedScoredPointsList[0] = getScoredPointsList(drawNumber, players, bingoCardsList, scoredPointsListEmpty);
                     boolean bingo = getBingo(updatedScoredPointsList);
-
                     if (bingo) {
                         for (int x = 0; x < updatedScoredPointsList[0].length; x++) {
                             if (updatedScoredPointsList[0][x] == bingoCardSize) {
@@ -68,9 +64,7 @@ public class Main {
                             }
                         }
                     }
-
                     break;
-
                 case 2:
                     exit(0);
                     break;
@@ -141,12 +135,10 @@ public class Main {
 //        }
 //        return bingoCard3;
         int[] pool = new int[numberOfRounds];
-
-
+        
         for (int i = 0; i < pool.length; i++) {
             pool[i] = i + 1;
         }
-
 
         for (int i = 0; i < (pool.length - 1); i++) {
             int j = random.nextInt(pool.length);
