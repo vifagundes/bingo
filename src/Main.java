@@ -1,3 +1,5 @@
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -5,8 +7,8 @@ import static java.lang.System.exit;
 
 public class Main {
     public static int bingoCardSize = 5;
-    public static int limitBingoCardNumbers = 91;
-    public static int numberOfRounds = limitBingoCardNumbers - 1;
+    public static int poolSize = 21;
+    public static int numberOfRounds = poolSize - 1;
 
     public static void main(String[] args) {
         Random random = new Random();
@@ -24,7 +26,7 @@ public class Main {
             pool[i] = i + 1;
         }
 
-        for (int i=0; i < (pool.length - 1); i++) {
+        for (int i = 0; i < (pool.length - 1); i++) {
             int j = random.nextInt(pool.length);
             int temp = pool[i];
             pool[i] = pool[j];
@@ -53,16 +55,13 @@ public class Main {
             switch (nextRound) {
                 case 1:
                     int drawNumber = getPrizeDraw(pool, i);
-                    System.out.printf("\nRODADA - %d\nNUMERO SORTEADO - %d\n", round, drawNumber);
-                    updatedScoredPointsList[0] = getScoredPointsList(drawNumber, players, bingoCardsList, scoredPointsListEmpty);
                     boolean bingo = getBingo(updatedScoredPointsList);
-                    if (bingo) {
-                        for (int x = 0; x < updatedScoredPointsList[0].length; x++) {
-                            if (updatedScoredPointsList[0][x] == bingoCardSize) {
-                                System.out.printf("\nPARABENS %s, VOCE FEZ BINGO!!!", players[x]);
-                                exit(0);
-                            }
-                        }
+                    System.out.printf("\nRODADA - %d\nNUMERO SORTEADO - %d\n", round, drawNumber);
+                    updatedScoredPointsList[0] = getScoredPointsList(drawNumber, bingoCardsList,players, scoredPointsListEmpty);
+
+                    if (bingo){
+                        statistics(round, players, updatedScoredPointsList);
+                        exit(0);
                     }
                     break;
                 case 2:
@@ -81,6 +80,15 @@ public class Main {
                     break;
             }
         }
+    }
+
+    private static void statistics(int round, String[] players, int[][] updatedScoredPointsList) {
+        for (int x = 0; x < updatedScoredPointsList[0].length; x++) {
+            if (updatedScoredPointsList[0][x] == bingoCardSize) {
+                System.out.printf("\n\nPARABENS %s, VOCE FEZ BINGO!!!\n", players[x]);
+            }
+        }
+        System.out.printf("\nO JOGO DUROU %d ROUNDS\n", round);
     }
 
     public static int getQntPlayers() {
@@ -121,30 +129,19 @@ public class Main {
     }
 
     public static int[] getBingoCardsAutomatic() {
-        Random random = new Random();
+        Random random   = new Random();
         int[] bingoCard = new int[bingoCardSize];
-//        int[] bingoCard2 = new int[bingoCardSize];
-//        int[] bingoCard3 = new int[bingoCardSize];
-//
-//        for (int i = 0; i < bingoCardSize; i++) {
-//            bingoCard1[i] = random.nextInt(limitBingoCardNumbers);
-//            bingoCard2[i] = random.nextInt(limitBingoCardNumbers);
-//            if (bingoCard1[i] != bingoCard2[i]) {
-//                bingoCard3[i] = bingoCard1[i];
-//            }
-//        }
-//        return bingoCard3;
-        int[] pool = new int[numberOfRounds];
-        
+        int[] pool      = new int[numberOfRounds];
+
         for (int i = 0; i < pool.length; i++) {
             pool[i] = i + 1;
         }
 
         for (int i = 0; i < (pool.length - 1); i++) {
-            int j = random.nextInt(pool.length);
+            int j    = random.nextInt(pool.length);
             int temp = pool[i];
-            pool[i] = pool[j];
-            pool[j] = temp;
+            pool[i]  = pool[j];
+            pool[j]  = temp;
         }
        for (int i = 0; i < bingoCardSize;i++) {
            bingoCard[i] = getPrizeDraw(pool,i);
@@ -187,7 +184,7 @@ public class Main {
         return scanner.nextInt();
     }
 
-    public static int[] getScoredPointsList(int drawNumber, String[] players, int[][] bingoCardsNumbers, int[] scoredPointsList) {
+    public static int[] getScoredPointsList(int drawNumber, int[][] bingoCardsNumbers, String[] players, int[] scoredPointsList) {
         for (int i = 0; i < bingoCardsNumbers.length; i++) {
             for (int j = 0; j < bingoCardsNumbers[i].length; j++) {
                 if (drawNumber == bingoCardsNumbers[i][j]) {
