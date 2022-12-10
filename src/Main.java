@@ -11,35 +11,24 @@ public class Main {
     public static int numberOfRounds = poolSize - 1;
 
     public static void main(String[] args) {
-        Random random = new Random();
 
-        int qntPlayers = getQntPlayers();
-        String[] players = getPlayers(qntPlayers);
-        int manualOrAutomatic = getManualOrAutomatic();
+        String[] players           = getPlayers();
+        int      qntPlayers        = players.length;
+        int      manualOrAutomatic = getManualOrAutomatic();
 
-        int[][] bingoCardsList = new int[qntPlayers][bingoCardSize];
-        int[] scoredPointsListEmpty = new int[qntPlayers];
+        int[][] bingoCardsList          = new int[qntPlayers][bingoCardSize];
+        int[]   scoredPointsListEmpty   = new int[qntPlayers];
         int[][] updatedScoredPointsList = new int[1][qntPlayers];
-        int[] pool = new int[numberOfRounds];
+        int[]   pool                    = new int[numberOfRounds];
+        int[]   randomPool              = getRandomPool(pool);
 
-        for (int i = 0; i < pool.length; i++) {
-            pool[i] = i + 1;
-        }
-
-        for (int i = 0; i < (pool.length - 1); i++) {
-            int j = random.nextInt(pool.length);
-            int temp = pool[i];
-            pool[i] = pool[j];
-            pool[j] = temp;
-        }
-
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 0; i < players.length; i++) {  //MENU PARA PERGUNTAR SE VAI SER MODO MANUAL OU AUTOMATICO
             switch (manualOrAutomatic) {
                 case 1:
-                    bingoCardsList[i] = getBingoCardsAutomatic();
+                    bingoCardsList[i] = getBingoCardsAutomatic(pool);
                     break;
                 case 2:
-                    System.out.printf("DIGITE OS %d NUMEROS DA CARTELA %s\n", bingoCardSize, players[i]);
+                    System.out.printf("DIGITE OS %d NUMEROS DA CARTELA %S\n", bingoCardSize, players[i]);
                     bingoCardsList[i] = getBingoCardsManual();
                     break;
                 default:
@@ -49,19 +38,23 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < numberOfRounds; i++) {
+        for (int index = 0; index < numberOfRounds; index++) {  // MENU PRINCIPAL DO JOGO
             int nextRound = getNextRound();
-            int round = i + 1;
+            int round = index + 1;
             switch (nextRound) {
                 case 1:
-                    int drawNumber = getPrizeDraw(pool, i);
-                    boolean bingo = getBingo(updatedScoredPointsList);
+                    int drawNumber = getPrizeDraw(randomPool, index);
                     System.out.printf("\nRODADA - %d\nNUMERO SORTEADO - %d\n", round, drawNumber);
                     updatedScoredPointsList[0] = getScoredPointsList(drawNumber, bingoCardsList,players, scoredPointsListEmpty);
-
-                    if (bingo){
-                        statistics(round, players, updatedScoredPointsList);
-                        exit(0);
+                    boolean bingo = getBingo(updatedScoredPointsList);
+                    if (bingo) {
+                        for (int x = 0; x < updatedScoredPointsList[0].length; x++) {
+                            if (updatedScoredPointsList[0][x] == bingoCardSize) {
+                                System.out.printf("\n\nPARABENS %S, VOCE FEZ BINGO!!!\n", players[x]);
+                                System.out.printf("\nO JOGO DUROU %d ROUNDS\n", round);
+                                exit(0);
+                            }
+                        }
                     }
                     break;
                 case 2:
@@ -69,44 +62,24 @@ public class Main {
                     break;
                 case 3:
                     printPlayersNamesAndBingoCards(players, bingoCardsList);
-                    i--;
+                    index--;
                     break;
                 case 4:
                     printInstructions();
-                    i--;
+                    index--;
                     break;
                 default:
-                    i--;
+                    index--;
                     break;
             }
         }
     }
 
-    private static void statistics(int round, String[] players, int[][] updatedScoredPointsList) {
-        for (int x = 0; x < updatedScoredPointsList[0].length; x++) {
-            if (updatedScoredPointsList[0][x] == bingoCardSize) {
-                System.out.printf("\n\nPARABENS %s, VOCE FEZ BINGO!!!\n", players[x]);
-            }
-        }
-        System.out.printf("\nO JOGO DUROU %d ROUNDS\n", round);
-    }
-
-    public static int getQntPlayers() {
+    public static String[] getPlayers() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("========\tBEM VINDO AO BINGO\t========\n");
-        System.out.println("DIGITE QUANTOS JOGADORES PARTICIPARAO DO JOGO");
-        return scanner.nextInt();
-    }
-
-    public static String[] getPlayers(int qntPlayers) {
-        Scanner scanner = new Scanner(System.in);
-        String[] players = new String[qntPlayers];
-        for (int i = 0; i < qntPlayers; i++) {
-            System.out.printf("DIGITE O NOME DO JOGADOR %d: ", i + 1);
-            players[i] = scanner.nextLine().toUpperCase();
-        }
-        System.out.printf("\nPARTICIPANTES: %s\n", Arrays.toString(players));
-        return players;
+        System.out.println("DIGITE A LISTA DE JOGADORES: (SEPARE O NOME DOS JGADORES POR -)");
+        String entry = scanner.nextLine();
+        return entry.split("-");
     }
 
     public static int getManualOrAutomatic() {
@@ -128,23 +101,11 @@ public class Main {
         return bingoCard;
     }
 
-    public static int[] getBingoCardsAutomatic() {
-        Random random   = new Random();
+    public static int[] getBingoCardsAutomatic(int[] pool) {
         int[] bingoCard = new int[bingoCardSize];
-        int[] pool      = new int[numberOfRounds];
-
-        for (int i = 0; i < pool.length; i++) {
-            pool[i] = i + 1;
-        }
-
-        for (int i = 0; i < (pool.length - 1); i++) {
-            int j    = random.nextInt(pool.length);
-            int temp = pool[i];
-            pool[i]  = pool[j];
-            pool[j]  = temp;
-        }
+        int[] randomPool = getRandomPool(pool);
        for (int i = 0; i < bingoCardSize;i++) {
-           bingoCard[i] = getPrizeDraw(pool,i);
+           bingoCard[i] = getPrizeDraw(randomPool,i);
        }
        return bingoCard;
     }
@@ -152,13 +113,28 @@ public class Main {
     public static void printPlayersNamesAndBingoCards(String[] players, int[][] bingoCards) {
         String player = "jogadores";
         String card = "cartela";
-        System.out.printf("\n%-15S%S", player, card);
+        System.out.printf("\n%-25S%S", player, card);
         for (int i = 0; i < players.length; i++) {
-            System.out.printf("\n%-15s", players[i]);
+            System.out.printf("\n%-25S", players[i]);
             for (int j = 0; j < bingoCards[i].length; j++) {
                 System.out.printf("%d\t", bingoCards[i][j]);
             }
         }
+    }
+
+    public static int[] getRandomPool(int[] pool) {
+        Random random   = new Random();
+        for (int i = 0; i < pool.length; i++) {
+            pool[i] = i + 1;
+        }
+
+        for (int i = 0; i < (pool.length - 1); i++) {
+            int j = random.nextInt(pool.length);
+            int temp = pool[i];
+            pool[i] = pool[j];
+            pool[j] = temp;
+        }
+        return pool;
     }
 
     private static void printInstructions() {
@@ -192,7 +168,7 @@ public class Main {
                 }
             }
             if (scoredPointsList[i] > 0) {
-                System.out.printf("\nO JOGADOR %s JA TEM %d PONTOS", players[i], scoredPointsList[i]);
+                System.out.printf("\nO JOGADOR %S JA TEM %d PONTOS", players[i], scoredPointsList[i]);
             }
         }
         return scoredPointsList;
