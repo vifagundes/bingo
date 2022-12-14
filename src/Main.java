@@ -1,3 +1,5 @@
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -9,6 +11,8 @@ public class Main {
     public static final int numberOfRounds = poolSize - 1;
 
     public static void main(String[] args) {
+
+        welcome(bingoCardSize,numberOfRounds);
 
         String[] players           = getPlayers();
         int      qntPlayers        = players.length;
@@ -83,6 +87,14 @@ public class Main {
                     break;
             }
         }
+    }
+
+    public static void welcome(int bingoCardSize, int poolSize) {
+        System.out.println("===\tBEM VINDO AO BINGO\t===");
+        System.out.printf("CADA CARTELA TERA %d NUMEROS\n", bingoCardSize);
+        System.out.printf("SERAO SORTEADOS NUMEROS DE 1 ATE %d\n", poolSize);
+        System.out.println("O VENCEDOR SERA QUEM COMPLETAR A CARTELA PRIMEIRO");
+        System.out.println("BOA SORTE");
     }
 
     public static String[] getPlayers() {
